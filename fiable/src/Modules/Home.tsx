@@ -3,41 +3,18 @@
 import React, { useState } from "react";
 import { TextField, Button, Typography } from "@mui/material";
 
-import { RegEx } from "../Utils/utils";
 import GridComponent from "../Component/gridComponent";
-import {
-  ERROR_MESSAGE_INVALID_INPUT,
-  ERROR_MESSAGE_INVALID_X_Y_COORDINATES,
-} from "../Contants/ErrorMessages/errorMessage";
 
 const Home: React.FC = () => {
   const [input, setInput] = useState<string>("");
   const [position, setPosition] = useState<string>("1,1 NORTH");
-  const [error, setError] = useState<string>("");
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInput(event.target.value);
   };
 
-  const validateInput = () => {
-    if (!RegEx.position.test(input)) {
-      setError(ERROR_MESSAGE_INVALID_INPUT);
-      return false;
-    }
-    const [, x, y] = input.match(RegEx.position)!.map(Number);
-    if (x < 0 || x > 4 || y < 0 || y > 4) {
-      setError(ERROR_MESSAGE_INVALID_X_Y_COORDINATES);
-      return false;
-    }
-    setError("");
-    return true;
-  };
-
   const handleButtonClick = () => {
-    if (validateInput()) {
-      setPosition(input);
-      setError("");
-    }
+    setPosition(input);
   };
 
   return (
@@ -57,8 +34,6 @@ const Home: React.FC = () => {
           Place Object
         </Button>
       </div>
-
-      {error && <Typography color="error">{error}</Typography>}
       <GridComponent position={position} />
     </div>
   );

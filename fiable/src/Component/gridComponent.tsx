@@ -9,7 +9,10 @@ import {
   Typography,
 } from "@mui/material";
 import { RegEx } from "../Utils/utils";
-import { ERROR_MESSAGE_INVALID_INPUT } from "../Contants/ErrorMessages/errorMessage";
+import {
+  ERROR_MESSAGE_INVALID_INPUT,
+  ERROR_MESSAGE_INVALID_X_Y_COORDINATES,
+} from "../Contants/ErrorMessages/errorMessage";
 
 type GridProps = {
   position: string;
@@ -24,17 +27,30 @@ const GridComponent: React.FC<GridProps> = ({ position }) => {
   } | null>(null);
 
   const parseInput = (input: string) => {
-    const match = input.match(RegEx.position);
-    if (match) {
-      const x = parseInt(match[1]);
-      const y = parseInt(match[2]);
-      const direction = match[3];
-      setCoordinates({ x, y, direction });
-      setErrorMessage(null);
-    } else {
-      setCoordinates(null);
-      setErrorMessage(ERROR_MESSAGE_INVALID_INPUT);
+    if (validateInput(input)) {
+      const match = input.match(RegEx.position);
+      if (match) {
+        const x = parseInt(match[1]);
+        const y = parseInt(match[2]);
+        const direction = match[3];
+        setCoordinates({ x, y, direction });
+        setErrorMessage(null);
+      }
     }
+  };
+
+  const validateInput = (input: string) => {
+    if (!RegEx.position.test(input)) {
+      setErrorMessage(ERROR_MESSAGE_INVALID_INPUT);
+      return false;
+    }
+    const [, x, y] = input.match(RegEx.position)!.map(Number);
+    if (x < 0 || x > 4 || y < 0 || y > 4) {
+      setErrorMessage(ERROR_MESSAGE_INVALID_X_Y_COORDINATES);
+      return false;
+    }
+    setErrorMessage("");
+    return true;
   };
 
   React.useEffect(() => {
