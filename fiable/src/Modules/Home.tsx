@@ -2,8 +2,9 @@
 
 import React, { useState } from "react";
 import { TextField, Button, Typography } from "@mui/material";
-import GridComponent from "../Component/GridComponent";
+
 import { RegEx } from "../Utils/utils";
+import GridComponent from "../Component/gridComponent";
 
 const Home: React.FC = () => {
   const [input, setInput] = useState<string>("");
@@ -37,16 +38,22 @@ const Home: React.FC = () => {
 
   return (
     <div style={{ padding: "20px" }}>
-      <Typography variant="h5">Grid Object Placement</Typography>
+      <Typography variant="h5" className="padB20">
+        Grid Object Placement
+      </Typography>
       <TextField
+        className="padB20"
         label="Position (e.g., 1,1 NORTH)"
         value={input}
         onChange={handleInputChange}
         fullWidth
       />
-      <Button onClick={handleButtonClick} variant="contained" color="primary">
-        Place Object
-      </Button>
+      <div className="padB20">
+        <Button onClick={handleButtonClick} variant="contained" color="primary">
+          Place Object
+        </Button>
+      </div>
+
       {error && <Typography color="error">{error}</Typography>}
       <GridComponent position={position} />
     </div>
