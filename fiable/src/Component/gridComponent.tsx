@@ -49,6 +49,7 @@ const GridComponent: React.FC<GridProps> = ({ position }) => {
       setErrorMessage(ERROR_MESSAGE_INVALID_X_Y_COORDINATES);
       return false;
     }
+
     setErrorMessage("");
     return true;
   };
