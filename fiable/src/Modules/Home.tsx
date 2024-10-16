@@ -2,12 +2,12 @@
 
 import React, { useState } from "react";
 import { TextField, Button, Typography } from "@mui/material";
-import GridComponent from "../Component/gridComponent";
+import GridComponent from "../Component/GridComponent";
+import { RegEx } from "../Utils/utils";
 
 const Home: React.FC = () => {
-  const [input, setInput] = useState<string>("1,1 NORTH");
+  const [input, setInput] = useState<string>("");
   const [position, setPosition] = useState<string>("1,1 NORTH");
-
   const [error, setError] = useState<string>("");
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -15,12 +15,11 @@ const Home: React.FC = () => {
   };
 
   const validateInput = () => {
-    const regex = /^(\d),(\d) (NORTH|EAST|SOUTH|WEST)$/;
-    if (!regex.test(input)) {
+    if (!RegEx.position.test(input)) {
       setError('Invalid input format. Use "x,y DIRECTION".');
       return false;
     }
-    const [, x, y] = input.match(regex)!.map(Number);
+    const [, x, y] = input.match(RegEx.position)!.map(Number);
     if (x < 0 || x > 4 || y < 0 || y > 4) {
       setError("x and y coordinates must be between 0 and 4.");
       return false;
@@ -40,7 +39,7 @@ const Home: React.FC = () => {
     <div style={{ padding: "20px" }}>
       <Typography variant="h5">Grid Object Placement</Typography>
       <TextField
-        label="Position (e.g., 0,0 EAST)"
+        label="Position (e.g., 1,1 NORTH)"
         value={input}
         onChange={handleInputChange}
         fullWidth

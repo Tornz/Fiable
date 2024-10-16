@@ -1,4 +1,4 @@
-import GridComponent from "../Component/gridComponent";
+import GridComponent from "../Component/GridComponent";
 
 export default {
   title: "GridComponent",

@@ -8,11 +8,11 @@ import {
   Paper,
 } from "@mui/material";
 
-interface Props {
+type GridProps = {
   position: string;
-}
+};
 
-const GridComponent: React.FC<Props> = ({ position }) => {
+const GridComponent: React.FC<GridProps> = ({ position }) => {
   const parseInput = (input: string) => {
     const regex = /^(\d),(\d) (NORTH|EAST|SOUTH|WEST)$/;
     const match = input.match(regex);
@@ -61,7 +61,7 @@ const GridComponent: React.FC<Props> = ({ position }) => {
                   key={colIndex}
                   style={{
                     position: "relative",
-                    width: "40px",
+                    width: "30px",
                     height: "70px",
                     border: "1px solid black",
                     textAlign: "center",
