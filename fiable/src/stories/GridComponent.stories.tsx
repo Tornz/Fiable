@@ -22,6 +22,11 @@ EdgeCaseWest.args = {
   position: "4,4 WEST",
 };
 
+export const EdgeCaseEast: any = Template.bind({});
+EdgeCaseEast.args = {
+  position: "0,2 EAST",
+};
+
 export const InvalidInput: any = Template.bind({});
 InvalidInput.args = {
   position: "5,5 NORTH",
