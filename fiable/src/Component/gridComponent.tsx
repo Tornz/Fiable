@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Table,
   TableBody,
@@ -6,24 +6,40 @@ import {
   TableContainer,
   TableRow,
   Paper,
+  Typography,
 } from "@mui/material";
+import { RegEx } from "../Utils/utils";
+import { ERROR_MESSAGE_INVALID_INPUT } from "../Contants/ErrorMessages/errorMessage";
 
 type GridProps = {
   position: string;
 };
 
 const GridComponent: React.FC<GridProps> = ({ position }) => {
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [coordinates, setCoordinates] = useState<{
+    x: number;
+    y: number;
+    direction: string;
+  } | null>(null);
+
   const parseInput = (input: string) => {
-    const regex = /^(\d),(\d) (NORTH|EAST|SOUTH|WEST)$/;
-    const match = input.match(regex);
+    const match = input.match(RegEx.position);
     if (match) {
       const x = parseInt(match[1]);
       const y = parseInt(match[2]);
       const direction = match[3];
-      return { x, y, direction };
+      setCoordinates({ x, y, direction });
+      setErrorMessage(null);
+    } else {
+      setCoordinates(null);
+      setErrorMessage(ERROR_MESSAGE_INVALID_INPUT);
     }
-    throw new Error("Invalid input format");
   };
+
+  React.useEffect(() => {
+    parseInput(position);
+  }, [position]);
 
   const renderObject = (x: number, y: number, direction: string) => {
     const rotation = {
@@ -38,7 +54,7 @@ const GridComponent: React.FC<GridProps> = ({ position }) => {
         style={{
           width: "30px",
           height: "30px",
-          backgroundColor: "red",
+          backgroundColor: "orange",
           transform: `rotate(${rotation}deg)`,
           position: "absolute",
           top: `${y * 8 + 20}px`, // Adjust as needed for centering
@@ -47,8 +63,6 @@ const GridComponent: React.FC<GridProps> = ({ position }) => {
       />
     );
   };
-
-  const { x, y, direction } = parseInput(position);
 
   return (
     <TableContainer component={Paper}>
@@ -67,15 +81,29 @@ const GridComponent: React.FC<GridProps> = ({ position }) => {
                     textAlign: "center",
                   }}
                 >
-                  {rowIndex === y &&
-                    colIndex === x &&
-                    renderObject(x, y, direction)}
+                  {coordinates &&
+                    rowIndex === coordinates.y &&
+                    colIndex === coordinates.x &&
+                    renderObject(
+                      coordinates.x,
+                      coordinates.y,
+                      coordinates.direction
+                    )}
                 </TableCell>
               ))}
             </TableRow>
           ))}
         </TableBody>
       </Table>
+
+      {errorMessage && (
+        <Typography
+          color="error"
+          style={{ padding: "16px", textAlign: "center" }}
+        >
+          {errorMessage}
+        </Typography>
+      )}
     </TableContainer>
   );
 };

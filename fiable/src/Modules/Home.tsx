@@ -5,6 +5,10 @@ import { TextField, Button, Typography } from "@mui/material";
 
 import { RegEx } from "../Utils/utils";
 import GridComponent from "../Component/gridComponent";
+import {
+  ERROR_MESSAGE_INVALID_INPUT,
+  ERROR_MESSAGE_INVALID_X_Y_COORDINATES,
+} from "../Contants/ErrorMessages/errorMessage";
 
 const Home: React.FC = () => {
   const [input, setInput] = useState<string>("");
@@ -17,12 +21,12 @@ const Home: React.FC = () => {
 
   const validateInput = () => {
     if (!RegEx.position.test(input)) {
-      setError('Invalid input format. Use "x,y DIRECTION".');
+      setError(ERROR_MESSAGE_INVALID_INPUT);
       return false;
     }
     const [, x, y] = input.match(RegEx.position)!.map(Number);
     if (x < 0 || x > 4 || y < 0 || y > 4) {
-      setError("x and y coordinates must be between 0 and 4.");
+      setError(ERROR_MESSAGE_INVALID_X_Y_COORDINATES);
       return false;
     }
     setError("");
